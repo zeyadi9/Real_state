@@ -29,6 +29,8 @@
             background: #f8fafc;
             margin: 0;
             padding: 0;
+            font-size: 1.05rem; /* كبرنا الخط الأساسي */
+            line-height: 1.6;
         }
 
         img, table, iframe, canvas, svg {
@@ -63,7 +65,7 @@
         }
 
         .nav-logo {
-            font-size: 1.3rem;
+            font-size: 1.6rem; /* تكبير اللوجو */
             font-weight: 800;
             color: #fff;
             text-decoration: none;
@@ -99,15 +101,15 @@
 
         .nav-link {
             color: #94a3b8;
-            padding: 0.5rem 0.7rem;
+            padding: 0.6rem 0.9rem;
             border-radius: 8px;
-            font-size: 0.85rem;
+            font-size: 1.05rem; /* تكبير خط الروابط */
             font-weight: 600;
             text-decoration: none;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.4rem;
             white-space: nowrap;
         }
 
@@ -306,18 +308,27 @@
 
         @media (max-width: 1024px) {
             .nav-links { display: none; }
-            .hamburger { display: flex; }
+            .hamburger { display: flex; flex-shrink: 0; }
+            .nav-logo { flex-shrink: 0; }
             .mobile-current-page {
                 display: flex;
                 align-items: center;
+                justify-content: center;
+                flex: 1;
+                min-width: 0;
+                padding: 0 10px;
             }
             .mobile-current-page-text {
                 background: rgba(255,255,255,0.05);
                 color: #fff;
                 padding: 4px 12px;
                 border-radius: 20px;
-                font-size: 0.75rem;
+                font-size: 0.85rem;
                 font-weight: 700;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
             }
         }
 
@@ -362,87 +373,56 @@
 
         @media (max-width: 900px) {
             .nav-inner {
-                min-height: 56px;
                 padding: 0 0.85rem;
-                display: grid;
-                grid-template-columns: auto 1fr auto;
-                align-items: center;
                 gap: 0.5rem;
             }
-
-            .nav-links {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
             .nav-logo {
-                font-size: 0.98rem;
+                font-size: 1.1rem;
                 gap: 0.4rem;
             }
-
             .nav-logo span {
-                font-size: 0.72rem;
+                font-size: 0.75rem;
                 padding: 2px 8px;
-            }
-
-            .mobile-current-page {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-width: 0;
-                flex: 1;
-            }
-
-            .mobile-current-page-text {
-                max-width: 100%;
             }
         }
 
         @media (max-width: 576px) {
+            body { font-size: 0.95rem; }
             .nav-inner {
-                min-height: 54px;
-                padding: 0 0.75rem;
+                padding: 0 0.5rem;
             }
-
             .nav-logo {
-                font-size: 0.92rem;
+                font-size: 0.95rem;
             }
-
             .nav-logo span {
-                font-size: 0.68rem;
-                padding: 2px 7px;
+                font-size: 0.7rem;
+                padding: 2px 6px;
             }
-
             .mobile-menu {
-                padding: 0.55rem 0.7rem 0.8rem;
+                padding: 0.8rem 1rem 1.2rem;
             }
-
             .mobile-menu a,
             .mobile-menu button {
-                font-size: 0.9rem;
-                padding: 0.78rem 0.85rem;
+                font-size: 1rem;
+                padding: 0.8rem;
             }
-
+            .mobile-current-page {
+                padding: 0 5px;
+            }
             .mobile-current-page-text {
-                font-size: 0.8rem;
-                padding: 0.32rem 0.65rem;
-                max-width: 135px;
+                font-size: 0.75rem;
+                padding: 3px 8px;
             }
-
             .page-content {
-                padding: 12px;
+                padding: 15px;
             }
-
             .footer-inner {
-                font-size: 0.84rem;
-                padding: 12px 14px;
+                font-size: 0.9rem;
+                padding: 15px;
             }
         }
 
-        @media (min-width: 901px) {
+        @media (min-width: 1025px) {
             .mobile-current-page {
                 display: none !important;
             }
@@ -556,27 +536,9 @@
 
 @php
     $currentPageLabel = match(true) {
-        request()->routeIs('leave') => 'اجازات',
-        request()->routeIs('permission') => 'اذونات',
-        request()->routeIs('Overtime') => 'اضافي',
-        request()->routeIs('view_Overtime') => 'عرض الاضافي',
-        request()->routeIs('view_leave') => 'عرض الاجازات',
-        request()->routeIs('view_permission') => 'عرض الاذونات',
-        request()->routeIs('check_in_out') => 'حضور وانصراف',
-        request()->routeIs('view_check_in_out') => 'سجل الحضور',
+        request()->routeIs('properties.*') => 'العقارات',
         request()->routeIs('login') => 'تسجيل الدخول',
         request()->routeIs('register') => 'إنشاء حساب',
-        request()->routeIs('view_penalties') => 'الجزاءات',
-        request()->routeIs('admin.penalties') => 'إضافة جزاء',
-        request()->routeIs('settlements.create') => 'طلب تسوية',
-        request()->routeIs('settlements.index') => 'سجل التسويات',
-        request()->routeIs('incentives.create') => 'إضافة حافز',
-        request()->routeIs('incentives.index') => 'عرض الحوافز',
-        request()->routeIs('admin_notes.create') => 'إضافة ملاحظة',
-        request()->routeIs('admin_notes.index') => 'ملاحظات الإدارة',
-        request()->routeIs('super_admin.entry') => 'إضافة يدوية',
-        request()->routeIs('audit_log') => 'Audit Log',
-        request()->routeIs('full_report.index') => 'تقارير مجمعه',
         default => 'الرئيسية',
     };
 @endphp
@@ -584,7 +546,7 @@
 <nav class="main-nav">
     <div class="nav-inner">
         <a href="/" class="nav-logo">
-            <span>HR</span> System
+            <span>Real-Estate</span> Tiba
         </a>
 
         <div class="mobile-current-page">
@@ -593,60 +555,32 @@
 
         @auth
         <div class="nav-links">
-            {{-- طلبات --}}
-            <div class="nav-item"><a href="{{ route('leave') }}" class="nav-link {{ request()->routeIs('leave') ? 'active' : '' }}">🏝️ اجازات</a></div>
-            <div class="nav-item"><a href="{{ route('permission') }}" class="nav-link {{ request()->routeIs('permission') ? 'active' : '' }}">📋 اذونات</a></div>
-            <div class="nav-item"><a href="{{ route('Overtime') }}" class="nav-link {{ request()->routeIs('Overtime') ? 'active' : '' }}">⏱️ اضافي</a></div>
-            <div class="nav-item"><a href="{{ route('check_in_out') }}" class="nav-link {{ request()->routeIs('check_in_out') ? 'active' : '' }}">⏳ حضور وانصراف</a></div>
-            <div class="nav-item"><a href="{{ route('settlements.create') }}" class="nav-link {{ request()->routeIs('settlements.create') ? 'active' : '' }}">⚙️ تسوية</a></div>
-
-            <div class="nav-separator"></div>
-
-            {{-- تتبع السجلات (Dropdown) --}}
+            {{-- العقارات --}}
             <div class="nav-item dropdown">
-                <div class="nav-link dropdown-trigger">
-                    📊 متابعة السجلات
+                <div class="nav-link dropdown-trigger {{ request()->routeIs('properties.*') ? 'active' : '' }}">
+                    🏢 العقارات
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </div>
                 <div class="dropdown-menu">
-                    <a href="{{ route('view_Overtime') }}" class="dropdown-link {{ request()->routeIs('view_Overtime') ? 'active' : '' }}">📈 سجل الاضافي</a>
-                    <a href="{{ route('view_leave') }}" class="dropdown-link {{ request()->routeIs('view_leave') ? 'active' : '' }}">🏖️ سجل الاجازات</a>
-                    <a href="{{ route('view_permission') }}" class="dropdown-link {{ request()->routeIs('view_permission') ? 'active' : '' }}">📝 سجل الاذونات</a>
-                    <a href="{{ route('view_check_in_out') }}" class="dropdown-link {{ request()->routeIs('view_check_in_out') ? 'active' : '' }}">📂 سجل الحضور</a>
-                    <a href="{{ route('view_penalties') }}" class="dropdown-link {{ request()->routeIs('view_penalties') ? 'active' : '' }}">⚠️ سجل الجزاءات</a>
-                    <a href="{{ route('settlements.index') }}" class="dropdown-link {{ request()->routeIs('settlements.index') ? 'active' : '' }}">⚙️ سجل التسويات</a>
+                    <a href="{{ route('properties.create') }}" class="dropdown-link {{ request()->routeIs('properties.create') ? 'active' : '' }}">➕ إضافة عقار/أرض</a>
+                    <a href="{{ route('properties.index') }}" class="dropdown-link {{ request()->routeIs('properties.index') ? 'active' : '' }}">📋 العقارات المتاحة</a>
+                    @if(auth()->user()->isStaff())
+                    <a href="{{ route('properties.sold') }}" class="dropdown-link {{ request()->routeIs('properties.sold') ? 'active' : '' }}">💰 العقارات المباعة</a>
+                    @endif
                 </div>
             </div>
 
-            {{-- أدوات الإدارة (Admin/Super Admin) --}}
-            @if(in_array(Auth::user()->role, ['admin', 'super_admin']))
-            <div class="nav-item dropdown">
-                <div class="nav-link dropdown-trigger">
-                    🛠️ الإدارة
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </div>
-                <div class="dropdown-menu">
-                    <div class="nav-group-label">إدارة الجزاءات</div>
-                    <a href="{{ route('admin.penalties') }}" class="dropdown-link {{ request()->routeIs('admin.penalties') ? 'active' : '' }}">⚠️ إضافة جزاء</a>
-                    
-                    @if(Auth::user()->role === 'super_admin')
-                        <div class="nav-group-label">أدوات السوبر أدمن</div>
-                        <a href="{{ route('admin.reset_password') }}" class="dropdown-link {{ request()->routeIs('admin.reset_password') ? 'active' : '' }}">🔑 استعادة كلمة السر</a>
-                        <a href="{{ route('super_admin.entry') }}" class="dropdown-link {{ request()->routeIs('super_admin.entry') ? 'active' : '' }}">➕ إضافة يدوية</a>
-                        <a href="{{ route('full_report.index') }}" class="dropdown-link {{ request()->routeIs('full_report.index') ? 'active' : '' }}">📄 التقرير الشامل</a>
-                        
-                        <div class="nav-group-label">الحوافز والملاحظات</div>
-                        <a href="{{ route('incentives.create') }}" class="dropdown-link {{ request()->routeIs('incentives.create') ? 'active' : '' }}">🌟 إضافة حافز</a>
-                        <a href="{{ route('incentives.index') }}" class="dropdown-link {{ request()->routeIs('incentives.index') ? 'active' : '' }}">📈 عرض الحوافز</a>
-                        <a href="{{ route('admin_notes.create') }}" class="dropdown-link {{ request()->routeIs('admin_notes.create') ? 'active' : '' }}">🗒️ إضافة ملاحظة</a>
-                        <a href="{{ route('admin_notes.index') }}" class="dropdown-link {{ request()->routeIs('admin_notes.index') ? 'active' : '' }}">🗒️ ملاحظات الإدارة</a>
-                    @endif
+            @if(auth()->user()->isStaff())
+            {{-- إدارة الموظفين --}}
+            <div class="nav-item">
+                <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">👥 الموظفين</a>
+            </div>
+            @endif
 
-                    @if(in_array(Auth::user()->email, ['mtaha@gama.com', 'z@z.z']))
-                        <div class="nav-group-label">Security Logs</div>
-                        <a href="{{ route('audit_log') }}" class="dropdown-link {{ request()->routeIs('audit_log') ? 'active' : '' }}">📜 Audit Log</a>
-                    @endif
-                </div>
+            @if(auth()->user()->isSuperAdmin())
+            {{-- سجل المراقبة --}}
+            <div class="nav-item">
+                <a href="{{ route('audit.index') }}" class="nav-link {{ request()->routeIs('audit.*') ? 'active' : '' }}">🔍 سجل المراقبة</a>
             </div>
             @endif
 
@@ -662,7 +596,6 @@
         @else
         <div class="nav-links">
             <a href="{{ route('login') }}" class="nav-link btn-login">🔑 دخول</a>
-            <a href="#" class="nav-link btn-register">✨ حساب جديد</a>
         </div>
         @endauth
         
@@ -673,37 +606,9 @@
     
     <div class="mobile-menu" id="mobileMenu">
         @auth
-            <a href="{{ route('leave') }}" class="{{ request()->routeIs('leave') ? 'active' : '' }}">🏖️ اجازات</a>
-            <a href="{{ route('permission') }}" class="{{ request()->routeIs('permission') ? 'active' : '' }}">📋 اذونات</a>
-            <a href="{{ route('Overtime') }}" class="{{ request()->routeIs('Overtime') ? 'active' : '' }}">⏱️ اضافي</a>
-            <a href="{{ route('check_in_out') }}" class="{{ request()->routeIs('check_in_out') ? 'active' : '' }}">⏳ حضور وانصراف</a>
-            <a href="{{ route('settlements.create') }}" class="{{ request()->routeIs('settlements.create') ? 'active' : '' }}">⚙️ طلب تسوية</a>
-            <div class="mobile-separator"></div>
-            <a href="{{ route('view_Overtime') }}" class="{{ request()->routeIs('view_Overtime') ? 'active' : '' }}">📊 عرض الاضافي</a>
-            <a href="{{ route('view_leave') }}" class="{{ request()->routeIs('view_leave') ? 'active' : '' }}">📅 عرض الاجازات</a>
-            <a href="{{ route('view_permission') }}" class="{{ request()->routeIs('view_permission') ? 'active' : '' }}">📝 عرض الاذونات</a>
-            <a href="{{ route('view_check_in_out') }}" class="{{ request()->routeIs('view_check_in_out') ? 'active' : '' }}">📂 سجل الحضور</a>
-            <a href="{{ route('view_penalties') }}" class="{{ request()->routeIs('view_penalties') ? 'active' : '' }}">📋 الجزاءات</a>
-            <a href="{{ route('settlements.index') }}" class="{{ request()->routeIs('settlements.index') ? 'active' : '' }}">⚙️ التسويات</a>
-            {{-- الادمن العادي + سوبر ادمن --}}
-            @if(in_array(Auth::user()->role, ['admin', 'super_admin']))
-            <div class="mobile-separator"></div>
-            <a href="{{ route('admin.penalties') }}" class="{{ request()->routeIs('admin.penalties') ? 'active' : '' }}">⚠️ إضافة جزاء</a>
-            @endif
-            {{-- سوبر ادمن فقط --}}
-            @if(Auth::user()->role === 'super_admin')
-                <a href="{{ route('admin.reset_password') }}" class="{{ request()->routeIs('admin.reset_password') ? 'active' : '' }}">🔑 ريست باسورد</a>
-                <a href="{{ route('super_admin.entry') }}" class="{{ request()->routeIs('super_admin.entry') ? 'active' : '' }}">➕ إضافة يدوية</a>
-                <a href="{{ route('full_report.index') }}" class="{{ request()->routeIs('full_report.index') ? 'active' : '' }}">📄 تقارير شاملة</a>
-                <div class="mobile-separator"></div>
-                <a href="{{ route('incentives.create') }}" class="{{ request()->routeIs('incentives.create') ? 'active' : '' }}">🌟 إضافة حافز</a>
-                <a href="{{ route('incentives.index') }}" class="{{ request()->routeIs('incentives.index') ? 'active' : '' }}">📈 الحوافز</a>
-                <a href="{{ route('admin_notes.create') }}" class="{{ request()->routeIs('admin_notes.create') ? 'active' : '' }}">📝 إضافة ملاحظة</a>
-                <a href="{{ route('admin_notes.index') }}" class="{{ request()->routeIs('admin_notes.index') ? 'active' : '' }}">🗒️ ملاحظات الإدارة</a>
-            @endif
-            @if(Auth::user()->email === 'z@z.z')
-                <a href="{{ route('audit_log') }}" class="{{ request()->routeIs('audit_log') ? 'active' : '' }}">📜 Audit Log</a>
-            @endif
+            <a href="{{ route('properties.create') }}" class="{{ request()->routeIs('properties.create') ? 'active' : '' }}">➕ إضافة عقار/أرض</a>
+            <a href="{{ route('properties.index') }}" class="{{ request()->routeIs('properties.index') ? 'active' : '' }}">🏢 العقارات المتاحة</a>
+            <a href="{{ route('properties.sold') }}" class="{{ request()->routeIs('properties.sold') ? 'active' : '' }}">💰 العقارات المباعة</a>
             <div class="mobile-separator"></div>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
@@ -711,7 +616,6 @@
             </form>
         @else
             <a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }}">🔑 تسجيل دخول</a>
-            <a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'active' : '' }}">✨ انشاء حساب</a>
         @endauth
     </div>
 </nav>
@@ -797,5 +701,7 @@
         });
     </script>
     @endif
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @yield('scripts')
 </body>
 </html>

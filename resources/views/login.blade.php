@@ -16,7 +16,7 @@
             <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Your email</label>
             <input type="email" id="email" name="email"
             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder-gray-400"
-            placeholder="name@gamma.scan" required />
+            placeholder="name@mail.com" required />
         </div>
         <div class="mb-5">
             <label for="password" class="block mb-2.5 text-sm font-medium text-heading">Your password</label>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class AuditLog extends Model
 {
@@ -11,20 +12,18 @@ class AuditLog extends Model
         'action',
         'module',
         'target',
-        'details',
     ];
 
     /**
-     * Helper to log an action easily.
+     * Create an audit log entry safely.
      */
-    public static function log($userName, $action, $module, $target, $details = null)
+    public static function log(?string $userName, string $action, string $module, string $target): void
     {
-        return self::create([
-            'user_name' => $userName,
+        static::create([
+            'user_name' => $userName ?? (Auth::check() ? Auth::user()->name : 'زائر / نظام'),
             'action'    => $action,
             'module'    => $module,
             'target'    => $target,
-            'details'   => $details,
         ]);
     }
 }
